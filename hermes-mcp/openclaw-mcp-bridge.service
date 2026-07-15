@@ -1,0 +1,18 @@
+[Unit]
+Description=OpenClaw MCP HTTP Bridge (for Hermes)
+After=openclaw-gateway.service network-online.target
+Wants=openclaw-gateway.service
+BindsTo=openclaw-gateway.service
+
+[Service]
+Type=simple
+ExecStart=/home/liao/.hermes/hermes-agent/venv/bin/python /home/liao/.openclaw/bridge_server.py
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=5
+Environment=PATH=/home/liao/.npm-global/bin:/usr/local/bin:/usr/bin:/bin
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=openclaw-gateway.service default.target

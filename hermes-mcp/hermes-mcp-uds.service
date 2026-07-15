@@ -1,0 +1,25 @@
+[Unit]
+Description=Hermes MCP UDS+TCP Dual-Transport Server
+Documentation=https://hermes-agent.nousresearch.com/docs
+After=network.target hermes-gateway.service
+Wants=hermes-gateway.service
+
+[Service]
+Type=simple
+ExecStart=/home/liao/.hermes/hermes-agent/venv/bin/python3 /home/liao/.hermes/hermes-agent/mcp_uds_server.py
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hermes-mcp-uds
+WorkingDirectory=/home/liao/.hermes/hermes-agent
+
+# Security hardening (user-scoped, keep permissive for IPC)
+PrivateTmp=no
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/liao/.hermes /tmp
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target
